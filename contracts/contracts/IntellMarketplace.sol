@@ -14,46 +14,20 @@ contract IntellMarketplace {
     using SafeMath for uint256;
 
     struct OrderStatus {
-        bool status;
+        address seller;
+        address collection;
+        uint256 tokenId;
+        uint256 price;
+        uint256 startTime;
+        uint256 duration;
+        bytes32 orderHash;
     }
 
     address public truthHolder = 0xF8AbE936Ff2bCc9774Db7912554c4f38368e05A2;
-    IERC20 public intellToken = 0xd9145CCE52D386f254917e481eB44e9943F39138;
+    IERC20 public intellToken =
+        IERC20(0xd9145CCE52D386f254917e481eB44e9943F39138);
 
     mapping(bytes32 => bool) private orderHashStatus;
-
-    function transferERC721(
-        address from,
-        address to,
-        uint256 tokenId,
-        IERC721Enumerable nft
-    ) external {
-        require(
-            nft.isApprovedForAll(from, address(this)) &&
-                nft.ownerOf(tokenId) == from,
-            "Not approved"
-        );
-        nft.safeTransferFrom(from, to, tokenId, "");
-    }
-
-    function transferERC20(
-        address from,
-        address to,
-        uint256 amount,
-        IERC20 tokenAddr
-    ) external {}
-
-    function sellerValidate() external view returns (bool) {
-        return true;
-    }
-
-    function buyerValidate() external view returns (bool) {
-        return true;
-    }
-
-    function cancel() external view returns (bool) {
-        return true;
-    }
 
     function buyIntellShareNFT(bytes calldata message, bytes calldata signature)
         external
@@ -71,36 +45,151 @@ contract IntellMarketplace {
             uint256 price,
             uint256 startTime,
             uint256 duration,
-            uint256 id,
             bytes32 orderHash
         ) = abi.decode(
                 message,
-                (address, address, address, uint256, uint256, uint256, uint256, uint256, bytes32)
+                (
+                    address,
+                    address,
+                    address,
+                    uint256,
+                    uint256,
+                    uint256,
+                    uint256,
+                    bytes32
+                )
             );
 
-        bytes32 _orderHash = keccak256(abi.encode(seller, collection, tokenId, price, startTime, duration, id));
         IERC721Enumerable nftCollection = IERC721Enumerable(collection);
 
-        require(_orderHash == orderHash, "Order Hash is not correct");
-        require(!orderHashStatus[orderHash], "Cancelled or Traded");
-        require(startTime.add(duration) <= block.timestamp, "Expired");
-
-        // Seller Status
-        require(nftCollection.isApprovedForAll(seller, address(this)), "Is not approved for all");
-        require(nftCollection.ownerOf(tokenId) == seller, "Seller doesn't have tokenId");
+        require(buyer == msg.sender && msg.sender == tx.origin, "Not bot");
 
         // Buyer Status
-        require(intellToken.balanceOf(buyer) <= price, "INTELL token Insufficent Error");
-        require(intellToken.allowance(buyer, address(this)) >= price, "Not approved from INTELL token");
+        require(buyerStatus(buyer, price), "buyer status is invalid");
+        // Order Status
+        require(
+            getOrderHashStatus(
+                OrderStatus(
+                    seller,
+                    collection,
+                    tokenId,
+                    price,
+                    startTime,
+                    duration,
+                    orderHash
+                )
+            ),
+            "Order is invalid"
+        );
 
         // transfers nft to buyer
-        nftCollection.safeTransfer(seller, buyer, tokenId, "");
+        nftCollection.safeTransferFrom(seller, buyer, tokenId, "");
 
         // transfers INTELL token to seller
         intellToken.transferFrom(buyer, seller, price);
 
+        orderHashStatus[orderHash] = true;
+    }
+
+    function cancel(bytes calldata message, bytes calldata signature) external {
+        require(
+            verifyMessage(message, signature),
+            "Need to sign from truth holder"
+        );
+
+        (
+            address seller,
+            address collection,
+            uint256 tokenId,
+            uint256 price,
+            uint256 startTime,
+            uint256 duration,
+            bytes32 orderHash
+        ) = abi.decode(
+                message,
+                (address, address, uint256, uint256, uint256, uint256, bytes32)
+            );
+
+        require(
+            msg.sender == seller && seller == tx.origin,
+            "Not bot or owner"
+        );
+
+        require(
+            getOrderHashStatus(
+                OrderStatus(
+                    seller,
+                    collection,
+                    tokenId,
+                    price,
+                    startTime,
+                    duration,
+                    orderHash
+                )
+            ),
+            "Order is invalid"
+        );
 
         orderHashStatus[orderHash] = true;
+    }
+
+    function getOrderHashStatus(OrderStatus memory _orderStatus)
+        public
+        view
+        returns (bool)
+    {
+        bytes32 _orderHash = keccak256(
+            abi.encode(
+                _orderStatus.seller,
+                _orderStatus.collection,
+                _orderStatus.tokenId,
+                _orderStatus.price,
+                _orderStatus.startTime,
+                _orderStatus.duration
+            )
+        );
+
+        IERC721Enumerable nftCollection = IERC721Enumerable(
+            _orderStatus.collection
+        );
+
+        // ================= The sold collection exists in factory contract and was not BLOCKED? ===============
+        //                                                                                             ========
+        //\\\\\\\\\\\\\\\\\/////////////////////\\\\\\\\\\\\\\\\\\\\\\////////////////\\\\\\\\\\\\\\\\\========
+        //                                                                                             ========
+        // ====================================================================================================
+        if (_orderStatus.price == 0) return false;
+
+        if (
+            _orderStatus.seller == address(0) ||
+            _orderStatus.collection == address(0)
+        ) return false;
+
+        if (_orderHash != _orderStatus.orderHash) return false;
+
+        if (!nftCollection.isApprovedForAll(_orderStatus.seller, address(this)))
+            return false;
+
+        if (nftCollection.ownerOf(_orderStatus.tokenId) != _orderStatus.seller)
+            return false;
+
+        if (orderHashStatus[_orderStatus.orderHash]) return false;
+
+        if (_orderStatus.startTime.add(_orderStatus.duration) < block.timestamp)
+            return false;
+
+        return true;
+    }
+
+    function buyerStatus(address buyer, uint256 price)
+        public
+        view
+        returns (bool)
+    {
+        if (buyer == address(0)) return false;
+        if (intellToken.allowance(buyer, address(this)) < price) return false;
+        if (intellToken.balanceOf(buyer) < price) return false;
+        return true;
     }
 
     function recoverSigner(bytes32 hash, bytes memory signature)
