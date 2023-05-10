@@ -5,13 +5,19 @@ const { Interface } = require('@ethersproject/abi');
 const web3 = new Web3(new Web3.providers.HttpProvider(config.INFURA_URL));
 
 
-const intellTokenContract = new web3.eth.Contract(config.INTELL_TOKEN_ABI, config.INTELL_TOKEN_ADDRESS )
-const intellSettingContract = new web3.eth.Contract(config.INTELL_SETTING_ABI, config.INTELL_SETTING_ADDRESS)
-const intellModelNFTContract = new web3.eth.Contract(config.CREATOR_NFT_ABI, config.CREATOR_NFT_ADDRESS)
-const factoryContract = new web3.eth.Contract(config.FACTORY_ABI, config.FACTORY_ADDRESS)
-const intellScanContract = new web3.eth.Contract(config.INTELL_SCAN_ABI, config.INTELL_SCAN_ADDRESS)
-const multiCallContract = new web3.eth.Contract(config.MULTICALL_ABI, config.MULTICALL_ADDRESS)
-const shareNFTContract = addr => new web3.eth.Contract(config.SHARE_NFT_ABI, addr)
+const intellTokenContract = new web3.eth.Contract(config.INTELL_TOKEN_ABI, config.INTELL_TOKEN_ADDRESS);
+const intellSettingContract = new web3.eth.Contract(config.INTELL_SETTING_ABI, config.INTELL_SETTING_ADDRESS);
+const intellModelNFTContract = new web3.eth.Contract(config.CREATOR_NFT_ABI, config.CREATOR_NFT_ADDRESS);
+const factoryContract = new web3.eth.Contract(config.FACTORY_ABI, config.FACTORY_ADDRESS);
+const intellScanContract = new web3.eth.Contract(config.INTELL_SCAN_ABI, config.INTELL_SCAN_ADDRESS);
+const multiCallContract = new web3.eth.Contract(config.MULTICALL_ABI, config.MULTICALL_ADDRESS);
+const shareNFTContract = addr => new web3.eth.Contract(config.SHARE_NFT_ABI, addr);
+const intellMarketplaceContract = new web3.eth.Contract(config.INTELL_MARKETPLACE_ABI, config.INTELL_MARKETPLACE_ADDRESS);
+
+
+const getTimestampForNow = async () => {
+    return (await web3.eth.getBlock('latest'))['timestamp'];
+}
 
 
 
@@ -62,7 +68,7 @@ const getInvestmentOpportunities = async () => {
     var calls = [];
     var _shareLen = await getShareLength();
     for (let i = 0; i < _shareLen; i++) {
-      calls.push({ address: config.INTELL_SCAN_ADDRESS, name: 'singleInvestmentChance', params: [i] })
+        calls.push({ address: config.INTELL_SCAN_ADDRESS, name: 'singleInvestmentChance', params: [i] })
     }
 
     const result = await multiCall(config.INTELL_SCAN_ABI, calls);
@@ -73,7 +79,7 @@ const getSharePortfolio = async (_owner) => {
     var calls = [];
     var _shareLen = await getShareLength();
     for (let i = 0; i < _shareLen; i++) {
-      calls.push({ address: config.INTELL_SCAN_ADDRESS, name: 'shareNFTCollectionDetail', params: [_owner, i] })
+        calls.push({ address: config.INTELL_SCAN_ADDRESS, name: 'shareNFTCollectionDetail', params: [_owner, i] })
     }
 
     const result = await multiCall(config.INTELL_SCAN_ABI, calls);
@@ -99,11 +105,23 @@ const getAllModels = async () => {
     var _modelsLen = await allModelLength();
     console.log(_modelsLen)
     for (let i = 0; i < _modelsLen; i++) {
-      calls.push({ address: config.INTELL_SCAN_ADDRESS, name: 'singleCreatorNFTDetail', params: [i + 1] })
+        calls.push({ address: config.INTELL_SCAN_ADDRESS, name: 'singleCreatorNFTDetail', params: [i + 1] })
     }
 
     const result = await multiCall(config.INTELL_SCAN_ABI, calls);
     return result;
+}
+
+const getOrderStatus = async (seller, collection, tokenId, price, startTime, duration) => {
+    const encodeOrder = web3.eth.abi.encodeParameters(["address", "address", "uint256", "uint256", "uint256", "uint256"],
+        [seller, collection, tokenId, price, startTime, duration]);
+
+    const orderHash = web3.utils.keccak256(encodeOrder);
+    const orderStatus = await intellMarketplaceContract.methods.getOrderHashStatus([seller, collection, tokenId, price, startTime, duration, orderHash]).call();
+
+    console.log(orderStatus);
+
+    return orderStatus;
 }
 
 const ModelMetadata = (onChainModel, offChainModel) => {
@@ -187,5 +205,7 @@ module.exports = {
     getModel,
     getAllModels,
     ModelMetadata,
-    ShareMetadata
+    ShareMetadata,
+    getTimestampForNow,
+    getOrderStatus
 }

@@ -6,6 +6,7 @@ const { createCategory } = require('./controllers/category.controller');
 const { createBasicProjectWithoutShare, createBasicProjectWithShare } = require('./controllers/project.controller');
 const { createEcosystem } = require('./controllers/ecosystem.controller');
 const { investmentOpportunities, portfolio, myModel, myModels, allModels } = require('./controllers/intell.controller');
+const { listForSale } = require('./controllers/marketplace.controller');
 const User = require("./models").user;
 
 router.get('/', (req, res, next) => {
@@ -30,5 +31,8 @@ router.get("/portfolio", portfolio);
 router.get("/my-models", myModels);
 router.get("/my-model", myModel);
 router.get("/all-models", allModels)
+
+//marketplace
+router.post("/marketplace/list-for-sale", listForSale)
 
 module.exports = router;

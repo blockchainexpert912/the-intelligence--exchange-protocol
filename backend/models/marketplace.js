@@ -1,8 +1,10 @@
+const { DataTypes } = require("sequelize");
+
 module.exports = (sequelize, Sequelize) => {
-    const Category = sequelize.define("category", {
+    const Marketplace = sequelize.define("marketplace", {
         seller: {
             allowNull: false,
-            type: DataTypes.STRING,
+            type: DataTypes.STRING
         },
         collection: {
             allowNull: false,
@@ -25,8 +27,6 @@ module.exports = (sequelize, Sequelize) => {
             type: DataTypes.BIGINT
         }
     });
-    Category.associate = function (models) {
-        Category.hasMany(models.project);
-    };
-    return Category;
+
+    return Marketplace;
 };
