@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
 
@@ -420,14 +419,7 @@ library Strings {
         return toHexString(uint256(uint160(addr)), _ADDRESS_LENGTH);
     }
 }
-
-
-
-
-/** 
- *  SourceUnit: d:\Projects\US\intell-truffle-deployer\contracts\IntellMarketplace.sol
-*/
-            
+     
 ////// SPDX-License-Identifier-FLATTEN-SUPPRESS-WARNING: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/IERC165.sol)
 
@@ -454,19 +446,11 @@ interface IERC165 {
     function supportsInterface(bytes4 interfaceId) external view returns (bool);
 }
 
-
-
-
-/** 
- *  SourceUnit: d:\Projects\US\intell-truffle-deployer\contracts\IntellMarketplace.sol
-*/
             
 ////// SPDX-License-Identifier-FLATTEN-SUPPRESS-WARNING: MIT
 // OpenZeppelin Contracts (last updated v4.8.0) (token/ERC721/IERC721.sol)
 
 pragma solidity ^0.8.0;
-
-////import "../../utils/introspection/IERC165.sol";
 
 /**
  * @dev Required interface of an ERC721 compliant contract.
@@ -609,11 +593,6 @@ interface IERC721 is IERC165 {
 
 
 
-
-/** 
- *  SourceUnit: d:\Projects\US\intell-truffle-deployer\contracts\IntellMarketplace.sol
-*/
-            
 ////// SPDX-License-Identifier-FLATTEN-SUPPRESS-WARNING: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/ERC165.sol)
 
@@ -644,13 +623,6 @@ abstract contract ERC165 is IERC165 {
     }
 }
 
-
-
-
-/** 
- *  SourceUnit: d:\Projects\US\intell-truffle-deployer\contracts\IntellMarketplace.sol
-*/
-            
 ////// SPDX-License-Identifier-FLATTEN-SUPPRESS-WARNING: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
 
@@ -677,12 +649,6 @@ abstract contract Context {
 }
 
 
-
-
-/** 
- *  SourceUnit: d:\Projects\US\intell-truffle-deployer\contracts\IntellMarketplace.sol
-*/
-            
 ////// SPDX-License-Identifier-FLATTEN-SUPPRESS-WARNING: MIT
 // OpenZeppelin Contracts (last updated v4.8.0) (utils/Address.sol)
 
@@ -929,12 +895,6 @@ library Address {
 }
 
 
-
-
-/** 
- *  SourceUnit: d:\Projects\US\intell-truffle-deployer\contracts\IntellMarketplace.sol
-*/
-            
 ////// SPDX-License-Identifier-FLATTEN-SUPPRESS-WARNING: MIT
 // OpenZeppelin Contracts v4.4.1 (token/ERC721/extensions/IERC721Metadata.sol)
 
@@ -964,12 +924,6 @@ interface IERC721Metadata is IERC721 {
 }
 
 
-
-
-/** 
- *  SourceUnit: d:\Projects\US\intell-truffle-deployer\contracts\IntellMarketplace.sol
-*/
-            
 ////// SPDX-License-Identifier-FLATTEN-SUPPRESS-WARNING: MIT
 // OpenZeppelin Contracts (last updated v4.6.0) (token/ERC721/IERC721Receiver.sol)
 
@@ -999,18 +953,10 @@ interface IERC721Receiver {
 }
 
 
-
-
-/** 
- *  SourceUnit: d:\Projects\US\intell-truffle-deployer\contracts\IntellMarketplace.sol
-*/
-            
 ////// SPDX-License-Identifier-FLATTEN-SUPPRESS-WARNING: MIT
 // OpenZeppelin Contracts (last updated v4.5.0) (token/ERC721/extensions/IERC721Enumerable.sol)
 
 pragma solidity ^0.8.0;
-
-////import "../IERC721.sol";
 
 /**
  * @title ERC-721 Non-Fungible Token Standard, optional enumeration extension
@@ -1036,24 +982,11 @@ interface IERC721Enumerable is IERC721 {
 }
 
 
-
-
-/** 
- *  SourceUnit: d:\Projects\US\intell-truffle-deployer\contracts\IntellMarketplace.sol
-*/
-            
 ////// SPDX-License-Identifier-FLATTEN-SUPPRESS-WARNING: MIT
 // OpenZeppelin Contracts (last updated v4.8.2) (token/ERC721/ERC721.sol)
 
 pragma solidity ^0.8.0;
 
-////import "./IERC721.sol";
-////import "./IERC721Receiver.sol";
-////import "./extensions/IERC721Metadata.sol";
-////import "../../utils/Address.sol";
-////import "../../utils/Context.sol";
-////import "../../utils/Strings.sol";
-////import "../../utils/introspection/ERC165.sol";
 
 /**
  * @dev Implementation of https://eips.ethereum.org/EIPS/eip-721[ERC721] Non-Fungible Token Standard, including
@@ -1550,18 +1483,11 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
 }
 
 
-
-
-/** 
- *  SourceUnit: d:\Projects\US\intell-truffle-deployer\contracts\IntellMarketplace.sol
-*/
             
 ////// SPDX-License-Identifier-FLATTEN-SUPPRESS-WARNING: MIT
 // OpenZeppelin Contracts (last updated v4.8.0) (utils/cryptography/ECDSA.sol)
 
 pragma solidity ^0.8.0;
-
-////import "../Strings.sol";
 
 /**
  * @dev Elliptic Curve Digital Signature Algorithm (ECDSA) operations.
@@ -1770,13 +1696,6 @@ library ECDSA {
     }
 }
 
-
-
-
-/** 
- *  SourceUnit: d:\Projects\US\intell-truffle-deployer\contracts\IntellMarketplace.sol
-*/
-            
 ////// SPDX-License-Identifier-FLATTEN-SUPPRESS-WARNING: MIT
 // OpenZeppelin Contracts (last updated v4.6.0) (token/ERC20/IERC20.sol)
 
@@ -1861,19 +1780,10 @@ interface IERC20 {
 }
 
 
-
-
-/** 
- *  SourceUnit: d:\Projects\US\intell-truffle-deployer\contracts\IntellMarketplace.sol
-*/
-            
 ////// SPDX-License-Identifier-FLATTEN-SUPPRESS-WARNING: MIT
 // OpenZeppelin Contracts (last updated v4.8.0) (token/ERC721/extensions/ERC721Enumerable.sol)
 
 pragma solidity ^0.8.0;
-
-////import "../ERC721.sol";
-////import "./IERC721Enumerable.sol";
 
 /**
  * @dev This implements an optional extension of {ERC721} defined in the EIP that adds
@@ -2028,11 +1938,6 @@ abstract contract ERC721Enumerable is ERC721, IERC721Enumerable {
 }
 
 
-
-
-/** 
- *  SourceUnit: d:\Projects\US\intell-truffle-deployer\contracts\IntellMarketplace.sol
-*/
             
 ////// SPDX-License-Identifier-FLATTEN-SUPPRESS-WARNING: MIT
 // OpenZeppelin Contracts (last updated v4.6.0) (utils/math/SafeMath.sol)
@@ -2263,12 +2168,6 @@ library SafeMath {
 }
 
 
-
-
-/** 
- *  SourceUnit: d:\Projects\US\intell-truffle-deployer\contracts\IntellMarketplace.sol
-*/
-            
 ////// SPDX-License-Identifier-FLATTEN-SUPPRESS-WARNING: MIT
 // OpenZeppelin Contracts (last updated v4.8.0) (security/ReentrancyGuard.sol)
 
@@ -2340,20 +2239,7 @@ abstract contract ReentrancyGuard {
 }
 
 
-/** 
- *  SourceUnit: d:\Projects\US\intell-truffle-deployer\contracts\IntellMarketplace.sol
-*/
-
-////// SPDX-License-Identifier-FLATTEN-SUPPRESS-WARNING: MIT
-
 pragma solidity ^0.8.2;
-
-////import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-////import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-////import "@openzeppelin/contracts/utils/Strings.sol";
-////import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-////import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-////import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract IntellMarketplace {
     using Strings for uint256;
@@ -2558,3 +2444,4 @@ contract IntellMarketplace {
         return recoverSigner(hash, signature) == truthHolder;
     }
 }
+
