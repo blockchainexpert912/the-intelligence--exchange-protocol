@@ -150,7 +150,7 @@ const ModelMetadata = (onChainModel, offChainModel) => {
         finished: onChainModel[15],
         countdown: onChainModel[16],
         withdrawn: onChainModel[17],
-        blocked: onChainModel[18]
+        blocked: onChainModel[18],
 
     }
 }
