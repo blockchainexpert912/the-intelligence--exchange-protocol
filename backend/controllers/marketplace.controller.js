@@ -81,7 +81,10 @@ const getNFTListForSale = async () => {
     }
 }
 
+
+
 module.exports = {
     listForSale,
-    getNFTListForSale
+    getNFTListForSale,
+
 }
