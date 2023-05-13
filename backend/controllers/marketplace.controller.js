@@ -12,6 +12,13 @@ const listForSale = async (req, res, next) => {
 
         const orderStatus = await getOrderStatus(seller, collection, tokenId, web3.utils.toWei(price.toString(), "ether"), startTime, duration)
 
+        await Marketplace.destroy({
+            where: {
+                collection,
+                tokenId
+            }
+        })
+
         const item = await Marketplace.create({
             seller,
             collection,
@@ -26,7 +33,8 @@ const listForSale = async (req, res, next) => {
         res.status(201).json({
             status: "success",
             data: {
-                item,
+                ...item,
+                orderStatus
             },
         });
     } catch (error) {

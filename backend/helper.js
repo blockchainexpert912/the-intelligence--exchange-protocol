@@ -117,10 +117,7 @@ const getOrderStatus = async (seller, collection, tokenId, price, startTime, dur
         [seller, collection, tokenId, price, startTime, duration]);
 
     const orderHash = web3.utils.keccak256(encodeOrder);
-    console.log([seller, collection, tokenId, price, startTime, duration, orderHash])
     const orderStatus = await intellMarketplaceContract.methods.getOrderHashStatus([seller, collection, tokenId, price, startTime, duration, orderHash]).call();
-
-    console.log(orderStatus);
 
     return orderStatus;
 }
