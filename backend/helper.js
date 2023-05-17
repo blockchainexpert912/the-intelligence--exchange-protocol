@@ -15,20 +15,29 @@ const shareNFTContract = addr => new web3.eth.Contract(config.SHARE_NFT_ABI, add
 const intellMarketplaceContract = new web3.eth.Contract(config.INTELL_MARKETPLACE_ABI, config.INTELL_MARKETPLACE_ADDRESS);
 
 
-const getTimestampForNow = async () => {
-    return (await web3.eth.getBlock('latest'))['timestamp'];
+const getTimestampForNow = () => {
+    //return (await web3.eth.getBlock('latest'))['timestamp'];
+    return Math.round(Date.now() / 1000);
 }
 
-
+const convertArgsIntoItem = (params) => {
+    return {
+        seller: params[0],
+        collection: params[1],
+        tokenId: params[2],
+        price: params[3] / Math.pow(10, config.OFF_CHAIN_DECIAMLS),
+        duration: params[4]
+    }
+}
 
 const generateSignature = async () => {
     const authMsg = getAuthMsg(config.NONCE);
     const { signature } = web3.eth.accounts.sign(authMsg, config.USER_PRIVATE_KEY)
-    return { signature, address: config.ADMIN_ADDRESS, nonce: config.NONCE }
+    return { signature, address: config.USER_ADDRESS, nonce: config.NONCE }
 }
 
-const recoverSignature = async (signature) => {
-    return await web3.eth.accounts.recover(getAuthMsg(config.NONCE), signature)
+const recoverSignature = (message, signature) => {
+    return web3.eth.accounts.recover(message, signature)
 }
 
 const multiCall = async (abi, calls) => {
@@ -205,5 +214,6 @@ module.exports = {
     ModelMetadata,
     ShareMetadata,
     getTimestampForNow,
-    getOrderStatus
+    getOrderStatus,
+    convertArgsIntoItem
 }

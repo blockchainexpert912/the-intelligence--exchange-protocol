@@ -1,5 +1,5 @@
 const { NONCE } = require("./config");
-const { toCheckSumAddress, recoverSignature, sameAddresses } = require("./helper");
+const { toCheckSumAddress, recoverSignature, sameAddresses, getAuthMsg } = require("./helper");
 const User = require("./models/user").user;
 
 
@@ -13,7 +13,7 @@ const verifySignatureMiddleware = async (req, res, next) => {
     req.verifiedSignature = false;
 
     if (signature && address && nonce) {
-        const signer = await recoverSignature(signature);
+        const signer = recoverSignature(getAuthMsg(NONCE), signature);
         if (sameAddresses(signer, address) && nonce === NONCE) {
             req.verifiedSignature = true;
             req.signer = signer;
@@ -26,7 +26,7 @@ const verifySignatureMiddleware = async (req, res, next) => {
         })
     }
 
-    
+
 }
 
 const authMiddleware = async (req, res, next) => {

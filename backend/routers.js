@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { login, signature, register } = require("./controllers/user.controller");
-const { verifySignatureMiddleware } = require('./middleware');
+const { verifySignatureMiddleware, authMiddleware } = require('./middleware');
 const { createCategory } = require('./controllers/category.controller');
 const { createBasicProjectWithoutShare, createBasicProjectWithShare } = require('./controllers/project.controller');
 const { createEcosystem } = require('./controllers/ecosystem.controller');
@@ -33,6 +33,6 @@ router.get("/my-model", myModel);
 router.get("/all-models", allModels)
 
 //marketplace
-router.post("/marketplace/list-for-sale", listForSale)
+router.post("/marketplace/list-for-sale", verifySignatureMiddleware, listForSale)
 
 module.exports = router;

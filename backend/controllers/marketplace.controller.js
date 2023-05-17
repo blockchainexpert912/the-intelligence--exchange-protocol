@@ -1,44 +1,61 @@
 const { OFF_CHAIN_DECIAMLS } = require("../config");
-const { getTimestampForNow, getOrderStatus, web3 } = require("../helper");
+const { getTimestampForNow, getOrderStatus, web3, recoverSignature, sameAddresses, convertArgsIntoItem } = require("../helper");
 
 const Marketplace = require("../models").marketplace;
 
 
 const listForSale = async (req, res, next) => {
     try {
-        req.body.price = req.body.price / Math.pow(10, OFF_CHAIN_DECIAMLS);
-        const { seller, collection, tokenId, price, duration } = req.body;
-        const startTime = await getTimestampForNow();
 
-        const orderStatus = await getOrderStatus(seller, collection, tokenId, web3.utils.toWei(price.toString(), "ether"), startTime, duration)
+        // verify signature
+        const { abi, itemsForSale, signature } = req.body;
+        let orderHash = web3.utils.keccak256(web3.eth.abi.encodeParameters(abi, itemsForSale));
+        let { seller, collection, tokenId, price, duration } = convertArgsIntoItem(itemsForSale);
+        const startTime = getTimestampForNow();
 
-        await Marketplace.destroy({
-            where: {
-                collection,
-                tokenId
+        if (sameAddresses(recoverSignature(orderHash, signature), req.signer) && sameAddresses(req.signer, seller)) {
+            console.log(seller, collection, tokenId, web3.utils.toWei(price.toString(), "ether"), startTime, duration)
+            const orderStatus = await getOrderStatus(seller, collection, tokenId, web3.utils.toWei(price.toString(), "ether"), startTime, duration);
+            if (orderStatus) {
+                await Marketplace.destroy({
+                    where: {
+                        collection,
+                        tokenId
+                    }
+                })
+
+                //price = 1236.36
+                price = 100253.6;
+
+                const item = await Marketplace.create({
+                    seller,
+                    collection,
+                    tokenId,
+                    startTime,
+                    price,
+                    duration
+                });
+
+                const _items = await Marketplace.findAll();
+
+
+                return res.status(201).json({
+                    status: "success",
+                    data: item,
+                    _items
+                });
+            } else {
+                return res.status(201).json({
+                    status: "invalid",
+                    message: "The sale request is invalid"
+                })
             }
-        })
-
-        const item = await Marketplace.create({
-            seller,
-            collection,
-            tokenId,
-            startTime,
-            price,
-            duration
-        });
+        }
 
 
 
-        res.status(201).json({
-            status: "success",
-            data: {
-                ...item,
-                orderStatus
-            },
-        });
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             status: "error",
             message: error.message,
         });
