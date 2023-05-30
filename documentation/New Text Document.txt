@@ -1,0 +1,46 @@
+Thanks for your payment. I got 1k from your coinbase account.
+
+1. Considering Coinbase issues, if weekly payments are difficult, how about making payments once every two weeks?
+2. Except for this week, the phase 2 development took 4 weeks and it was successfully completed. So, if possible, I would appreciate it if you could finish the payment for the phase 2.
+
+Payment for Phase 2 Development :
+Contracted payout: $8000 (= 4 * 2000)
+Amount paid: $4200 (= $3200 + $1000)
+Remainder amount: $3800 (= $2200 + $400 * 4)
+correct?
+
+Note: Made payment status table for you to make it easy to manage payment.
+https://docs.google.com/document/d/1Bno90DEGyYtIk8Yevr1AWftsEbs-b_kFQA_fpyL_zAE/edit?usp=sharing
+
+3. Unlike the phase 1 and phase 2 of development, in the phase 3 of development, most smart contracts and backend APIs have a close relationship.
+Therefore, I propose that we set the scope of Phase 3 development to all features except the Dutch Auction Marketplace, which will be completed by July 15.
+I have discussed this with Isom, and he has agreed. Do you agree?
+
+While discussing phase 3 development, I had already discussed it with Isom, and he agreed.
+Agree?
+
+4. If possible, we would appreciate it if you would change from split weekly payment ($1600 + $400) to single weekly payment ($2000) from the phase 3.
+Is it possible?
+
+5. Additional questions raised in phase 3 development:
+a. When investors buy/sell on the marketplace with their Investor Model NFTs, we plan to provide an automatic royalty rewards withdrawal function to the owner.
+Agree?
+b. Creator NFTs owned by data scientists are not transferable to other owners (suggested by Isom).
+Agree?
+c. Subscription Logic
+- Business first deposits INTELL or USDT to subscribe to the required model.
+- Business subscribes to the desired model.
+- Subscription cycle is monthly. (e.g. 10000$/mo)
+- He deposited 55000$ and started the subscription. He unsubscribed after 100 days (3 months and 10 days). In this case, the amount paid is 40000$ and the remaining balance is 15000$.
+correct?
+- Also, he deposited 55000$ and started the subscription. After 150 days (5 months) it is automatically unsubscribed by TIEX Finance Contract and Subscription Contract and the remaining balance is 5000$. correct?
+
+6. "Perhaps this year to be listed on unit swap"  you emailed to me before.
+
+May I know what your INTELL token Presale plan is? I have good experience in listing Tokens on Uniswap. The motto of my token presale is to build a very secure market with no dump and bump. In particular, according to the roadmap in your whitepaper, your project can be very active from at least 6 months later, unlike other projects, and I think it is very important to keep the token price safe without any dump or pump until then. Also, I think you need to pay attention to the INTELL market architecture so that real profits can be provided to all initial presale investors.
+
+
+Looking forward to hearing from you soon.
+
+Best regards,
+Dmitry

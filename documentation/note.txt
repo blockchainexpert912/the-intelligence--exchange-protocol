@@ -1,0 +1,8 @@
+Token:
+https://goerli.etherscan.io/address/0x36e9c35dc128379ec1caef3cc9c0f5b97b55ea5a#code
+https://goerli.etherscan.io/address/0x24ee5b2fe8f7d08d946a4ca8e0b7b7e289c3a7d3#code
+https://goerli.etherscan.io/address/0x628c88b9755afa6ed103841d0193f301cda7badf#code
+
+https://testnet.bscscan.com/address/0x51A3b41a6787f1acFdfE23CB7D2248402cCc78CD#code
+https://testnet.bscscan.com/address/0xbd01d5d74A6D0A450f6666Ed700b800d3525d6b4#code
+https://testnet.bscscan.com/address/0x5284ee57dbD9De4756cb6962556295deAeA51014#code
